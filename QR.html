@@ -1,37 +1,415 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Accès Formulaire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University of Saida - Secure Form Access</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
-        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); text-align: center; }
-        input { padding: 10px; margin: 10px 0; width: 80%; }
-        button { padding: 10px 20px; cursor: pointer; }
-        .error { color: red; margin-top: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .university-header {
+            background: linear-gradient(to right, #0c2461, #1e3799);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo i {
+            font-size: 32px;
+            color: #0c2461;
+        }
+        
+        .university-info {
+            text-align: center;
+        }
+        
+        .university-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        .university-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            color: #e6e6e6;
+        }
+        
+        .form-title {
+            font-size: 24px;
+            margin-top: 15px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 45px 15px 15px;
+            border: 2px solid #d1d8e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+        }
+        
+        .input-group input:focus {
+            border-color: #1e3799;
+            outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(30, 55, 153, 0.1);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .password-toggle:hover {
+            color: #1e3799;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(to right, #0c2461, #1e3799);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(to right, #0a1d4d, #172d7a);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(12, 36, 97, 0.25);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #d32f2f;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: shake 0.5s;
+            border-left: 4px solid #d32f2f;
+        }
+        
+        .error.show {
+            display: flex;
+        }
+        
+        .hint {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            padding: 12px;
+            background-color: #f1f8ff;
+            border-radius: 8px;
+            border-left: 4px solid #1e3799;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+        
+        .university-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+            
+            .university-header {
+                padding: 20px 15px;
+            }
+            
+            .university-name {
+                font-size: 20px;
+            }
+            
+            .form-title {
+                font-size: 20px;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .logo i {
+                font-size: 28px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Accès au formulaire</h2>
-        <p>Entrez le mot de passe pour continuer :</p>
-        <input type="password" id="password" placeholder="Mot de passe">
-        <br>
-        <button onclick="checkPassword()">Valider</button>
-        <div class="error" id="error"></div>
+        <div class="university-header">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="university-info">
+                    <div class="university-name">University of Saida</div>
+                    <div class="university-subtitle">Dr Tahar Moulay</div>
+                </div>
+            </div>
+            
+            <div class="form-title">
+                <i class="fas fa-lock"></i> Secure Form Access
+            </div>
+            <p>Enter the password to access the confidential form</p>
+            
+            <div class="university-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>University Protected Portal</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="password">
+                    <i class="fas fa-key"></i> Access Password
+                </label>
+                <input type="password" id="password" placeholder="Enter the secure password">
+                <button class="password-toggle" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            
+            <button class="btn-submit" id="submitBtn">
+                <i class="fas fa-paper-plane"></i> Access University Form
+            </button>
+            
+            <div class="error" id="error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Incorrect password. Please try again.</span>
+            </div>
+            
+            <div class="hint">
+                <i class="fas fa-lightbulb"></i> 
+                <strong>Access Hint:</strong> The password combines "info" with the current year.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>
+                <i class="fas fa-graduation-cap"></i> 
+                University of Saida Dr Tahar Moulay &copy; 2025 | 
+                <strong>Secure Academic Portal</strong>
+            </p>
+            <p style="margin-top: 5px; font-size: 12px; color: #888;">
+                This form is restricted to authorized university personnel only.
+            </p>
+        </div>
     </div>
 
     <script>
+        // DOM Elements
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorElement = document.getElementById('error');
+        const errorText = document.getElementById('errorText');
+        
+        // Correct password
+        const correctPassword = "info2025";
+        
+        // Toggle password visibility
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle icon
+            this.innerHTML = type === 'password' ? 
+                '<i class="fas fa-eye"></i>' : 
+                '<i class="fas fa-eye-slash"></i>';
+        });
+        
+        // Check password function
         function checkPassword() {
-            const pwd = document.getElementById('password').value;
-            const correctPwd = "info2025"; // ton mot de passe
-
-            if(pwd === correctPwd){
-                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfqyisyIe0ToXceMa8FsEMbUUbdmwVbqxFOsji0fymQ99uQdA/viewform?usp=header";
+            const enteredPassword = passwordInput.value.trim();
+            
+            // Clear any previous error
+            errorElement.classList.remove('show');
+            
+            // Check if password is empty
+            if (!enteredPassword) {
+                errorText.textContent = "Please enter the access password.";
+                errorElement.classList.add('show');
+                return;
+            }
+            
+            // Check if password is correct
+            if (enteredPassword === correctPassword) {
+                // Show success feedback
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Access Granted. Redirecting...';
+                submitBtn.style.background = 'linear-gradient(to right, #00b09b, #96c93d)';
+                
+                // Add university success style
+                submitBtn.style.boxShadow = '0 5px 15px rgba(0, 176, 155, 0.3)';
+                
+                // Redirect after a short delay to show feedback
+                setTimeout(() => {
+                    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfqyisyIe0ToXceMa8FsEMbUUbdmwVbqxFOsji0fymQ99uQdA/viewform?usp=header";
+                }, 1000);
             } else {
-                document.getElementById('error').textContent = "Mot de passe incorrect. Essayez encore.";
+                // Show error
+                errorText.textContent = "Access denied. Incorrect password. Please try again.";
+                errorElement.classList.add('show');
+                
+                // Add shake animation to input
+                passwordInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    passwordInput.style.animation = '';
+                }, 500);
+                
+                // Clear the input
+                passwordInput.value = '';
+                passwordInput.focus();
             }
         }
+        
+        // Submit on button click
+        submitBtn.addEventListener('click', checkPassword);
+        
+        // Submit on Enter key
+        passwordInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // Focus on password input when page loads
+        window.addEventListener('load', function() {
+            passwordInput.focus();
+            
+            // Add a subtle animation to the logo
+            const logo = document.querySelector('.logo');
+            logo.style.transform = 'scale(1)';
+            logo.style.transition = 'transform 0.5s';
+            
+            setTimeout(() => {
+                logo.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    logo.style.transform = 'scale(1)';
+                }, 300);
+            }, 500);
+        });
     </script>
 </body>
 </html>
