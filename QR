@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accès Formulaire</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); text-align: center; }
+        input { padding: 10px; margin: 10px 0; width: 80%; }
+        button { padding: 10px 20px; cursor: pointer; }
+        .error { color: red; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Accès au formulaire</h2>
+        <p>Entrez le mot de passe pour continuer :</p>
+        <input type="password" id="password" placeholder="Mot de passe">
+        <br>
+        <button onclick="checkPassword()">Valider</button>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const pwd = document.getElementById('password').value;
+            const correctPwd = "info2025"; // ton mot de passe
+
+            if(pwd === correctPwd){
+                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfqyisyIe0ToXceMa8FsEMbUUbdmwVbqxFOsji0fymQ99uQdA/viewform?usp=header";
+            } else {
+                document.getElementById('error').textContent = "Mot de passe incorrect. Essayez encore.";
+            }
+        }
+    </script>
+</body>
+</html>
